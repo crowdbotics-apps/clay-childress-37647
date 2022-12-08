@@ -3,126 +3,112 @@ import {
   Text,
   StyleSheet,
   View,
+  TextInput,
+  FlatList,
   Image,
-  ScrollView,
-  TextInput
+  Pressable
 } from "react-native";
 
-const DirectMessagesScreen = (params) => {
-  const [message, setMessage] = useState("");
-  const [user1, setUser1] = useState({});
-  const [user2, setUser2] = useState({});
-  const [conversation, setConversation] = useState([]);
+const ChatListingScreen = params => {
+  const [username, setUsername] = useState("");
+  const [messages, setMessages] = useState([]);
   useEffect(() => {
-    setUser1({
-      name: "User1",
-      image: require("./assets/profile1.png"),
-      isOnline: true
-    });
-    setUser2({
-      name: "Username",
-      image: require("./assets/profile2.png"),
-      isOnline: true
-    });
-  }, []);
-  useEffect(() => {
-    setConversation([
+    setMessages([
       {
         id: 1,
-        sender: user1,
-        text: "lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        sentTime: "12:00 PM"
+        name: "Cody Fisher",
+        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        profileImage: require("./assets/profile.png"),
+        unread: 1,
+        isOnline: true,
+        lastTime: "15 min"
       },
       {
         id: 2,
-        sender: user2,
-        text: "lorem ipsum dolor sit amet",
-        sentTime: "01:15 PM"
+        name: "Jenny Wilson",
+        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        profileImage: require("./assets/profile.png"),
+        unread: 2,
+        isOnline: true,
+        lastTime: "1 hour"
       },
       {
         id: 3,
-        sender: user2,
-        text: "lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        sentTime: "01:15 PM"
+        name: "Johnny Watson",
+        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        profileImage: require("./assets/profile.png"),
+        unread: 0,
+        isOnline: true,
+        lastTime: "2 hours"
       },
       {
         id: 4,
-        sender: user1,
-        text: "lorem ipsum dolor sit amet",
-        sentTime: "01:15 PM"
+        name: "Ralph Williams",
+        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        profileImage: require("./assets/profile.png"),
+        unread: 0,
+        isOnline: false,
+        lastTime: "3 hours"
       },
       {
         id: 5,
-        sender: user2,
-        text: "lorem ipsum dolor sit amet",
-        sentTime: "01:15 PM"
+        name: "Guy Hawkins",
+        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        profileImage: require("./assets/profile.png"),
+        unread: 0,
+        isOnline: false,
+        lastTime: "Mon"
       },
       {
         id: 6,
-        sender: user1,
-        text: "lorem ipsum dolor sit amet",
-        sentTime: "01:15 PM"
+        name: "Morris Henery",
+        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        profileImage: require("./assets/profile.png"),
+        unread: 0,
+        isOnline: false,
+        lastTime: "Tue"
+      },
+      {
+        id: 7,
+        name: "Irma Flores",
+        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        profileImage: require("./assets/profile.png"),
+        unread: 0,
+        isOnline: false,
+        lastTime: "Wed"
       }
     ]);
-  }, [user1, user2]);
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.headerImage}>
-          <Image source={user2.image} style={styles.headerImage} />
-          {(user2.isOnline && (
-            <Image
-              source={require("./assets/onlineIcon.png")}
-              style={styles.activityIconHeader}
-            />
-          )) ||
-            null}
-        </View>
-        <View style={styles.profileName}>
-          <Text style={styles.profileNameText}>{user2.name}</Text>
-        </View>
-        <View style={styles.icons}>
-          <Image source={require("./assets/phoneIcon.png")} />
-          <Image source={require("./assets/videoIcon.png")} />
-        </View>
-      </View>
-      <ScrollView style={styles.body}>
-        {conversation.map((message, index) => (
-          <ConversationElement message={message} key={index} />
-        ))}
-      </ScrollView>
-      <View style={styles.footer}>
-        <View style={styles.camera}>
-          <Image
-            source={require("./assets/cameraIcon.png")}
-            style={styles.cameraIcon}
-          />
-        </View>
         <View style={styles.inputContainer}>
+          <Text style={styles.inputText}>Search</Text>
           <TextInput
             style={styles.input}
-            placeholder="Type a message"
-            onChangeText={(text) => setMessage(text)}
-            value={message}
-            autoCorrect={false}
+            onChangeText={text => setUsername(text)}
+            value={username}
+            placeholder="Search Username"
+            placeholderTextColor="#9B9B9B"
             autoCapitalize="none"
-            autoFocus={false}
+            autoCorrect={false}
           />
           <Image
-            source={require("./assets/emojiIcon.png")}
-            style={styles.smileyIcon}
-          />
-          <Image
-            source={require("./assets/voiceIcon.png")}
-            style={styles.voiceIcon}
+            source={require("./assets/searchIcon.png")}
+            style={styles.searchIcon}
           />
         </View>
-        <View style={styles.send}>
-          <Image
-            source={require("./assets/sendIcon.png")}
-            style={styles.sendIcon}
-          />
-        </View>
+      </View>
+      <TabView tabTitles={["Select all", "Delete selected"]} selected={0} />
+      <FlatList
+        data={messages}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => <ChatListingItem message={item} />}
+      />
+      <View style={styles.newBtn}>
+        <Pressable>
+          <Image source={require("./assets/plusIcon.png")} />
+        </Pressable>
       </View>
     </View>
   );
@@ -131,156 +117,190 @@ const DirectMessagesScreen = (params) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    justifyContent: "flex-start"
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    marginHorizontal: 20,
-    backgroundColor: "#F1F1F1",
-    borderRadius: 10,
-    height: 50
-  },
-  headerImage: {
-    flex: 1,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    resizeMode: "contain",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  profileName: {
-    flex: 2
-  },
-  profileNameText: {
-    fontSize: 16
-  },
-  icons: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  activityIconHeader: {
-    width: 10,
-    height: 10,
-    resizeMode: "contain",
-    position: "absolute",
-    right: 20,
-    top: 25
-  },
-  body: {
-    flex: 1,
-    marginTop: 10
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    margin: 10
+    padding: 20,
+    // flex: 1,
+    height: 100
   },
   inputContainer: {
-    width: "80%"
+    flexDirection: "column",
+    flex: 1,
+    justifyContent: "center",
+    marginHorizontal: 5
+  },
+  inputText: {
+    fontSize: 16,
+    marginLeft: 20,
+    color: "#111112"
   },
   input: {
-    paddingLeft: 15,
+    borderWidth: 1,
+    borderColor: "#e6e6e6",
     borderRadius: 10,
-    backgroundColor: "#F1F1F1"
+    padding: 10,
+    paddingLeft: 20,
+    marginVertical: 10,
+    width: "100%",
+    height: 50
   },
-  smileyIcon: {
+  searchIcon: {
     position: "absolute",
-    right: 40,
-    top: 10,
-    opacity: 0.5
+    right: 30,
+    top: 35
   },
-  voiceIcon: {
-    top: 14,
-    right: 15,
+  newBtn: {
     position: "absolute",
-    opacity: 0.5
+    backgroundColor: "black",
+    bottom: 30,
+    right: 30,
+    padding: 20,
+    borderRadius: 50,
+    elevation: 10,
+    shadowColor: "grey"
   }
 });
-export default DirectMessagesScreen;
+export default ChatListingScreen;
 
-const ConversationElement = ({ message }) => {
-  const boxAlignment = {
-    flexDirection: message.sender.name === "User1" ? "row" : "row-reverse"
-  };
-  const messageTextContainer = {
-    marginLeft: message.sender.name === "User1" ? 20 : 0,
-    marginRight: message.sender.name === "User1" ? 0 : 20,
-    backgroundColor: message.sender.name === "User1" ? "#FCF1D6" : "#F9D8D9"
-  };
+const ChatListingItem = ({ message }) => {
   return (
-    <View style={[ConversationElementStyles.messageContainer, boxAlignment]}>
-      <View style={ConversationElementStyles.profileImageContainer}>
+    <View style={chatListingItemStyles.chatListingItem}>
+      <Image
+        source={message.profileImage}
+        style={chatListingItemStyles.profileImage}
+      />
+      {(message.isOnline && (
         <Image
-          source={message.sender.image}
-          style={ConversationElementStyles.profileImage}
+          source={require("./assets/onlineIcon.png")}
+          style={chatListingItemStyles.activityDot}
         />
-        {(message.sender.isOnline && (
-          <Image
-            source={require("./assets/onlineIcon.png")}
-            style={ConversationElementStyles.activityIcon}
-          />
+      )) ||
+        null}
+      <View style={chatListingItemStyles.chatListingItemInfo}>
+        <Text style={chatListingItemStyles.username}>{message.name}</Text>
+        <Text style={chatListingItemStyles.message}>{message.message}</Text>
+      </View>
+      <View style={chatListingItemStyles.chatListingItemTime}>
+        <Text style={chatListingItemStyles.time}>{message.lastTime}</Text>
+        {(message.unread > 0 && (
+          <View style={chatListingItemStyles.unread}>
+            <Text
+              style={{
+                color: "#fff"
+              }}>
+              {message.unread}
+            </Text>
+          </View>
         )) ||
           null}
-      </View>
-      <View
-        style={[
-          ConversationElementStyles.messageTextContainer,
-          messageTextContainer
-        ]}
-      >
-        <Text style={ConversationElementStyles.messageText}>
-          {message.text}
-        </Text>
-        <Text style={ConversationElementStyles.messageTime}>
-          {message.sentTime}
-        </Text>
       </View>
     </View>
   );
 };
 
-const ConversationElementStyles = StyleSheet.create({
-  messageContainer: {
+const chatListingItemStyles = StyleSheet.create({
+  chatListingItem: {
     flexDirection: "row",
     alignItems: "center",
-    margin: 10,
-    justifyContent: "flex-start",
-    marginVertical: 20
+    borderColor: "#e6e6e6",
+    borderBottomWidth: 1,
+    marginHorizontal: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    height: 100
   },
-  messageTextContainer: {
-    minHeight: 70,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "flex-start",
-    width: "70%"
+  profileImage: {
+    width: 70,
+    height: 70
   },
-  messageText: {
-    lineHeight: 20,
-    fontSize: 14,
-    color: "#000",
+  activityDot: {
+    position: "absolute",
+    left: 65,
+    bottom: 20
+  },
+  chatListingItemInfo: {
+    flex: 1,
+    marginHorizontal: 15
+  },
+  username: {
+    fontSize: 16,
     fontWeight: "bold",
-    textAlign: "left"
+    color: "#111112"
   },
-  activityIcon: {
-    position: "absolute",
-    right: 0,
-    top: 40
+  message: {
+    fontSize: 14,
+    color: "grey"
   },
-  messageTime: {
-    position: "absolute",
-    right: 5,
-    bottom: -20,
+  chatListingItemTime: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: 60
+  },
+  time: {
+    fontSize: 14,
     color: "grey",
-    fontSize: 12
+    fontWeight: "bold"
+  },
+  unread: {
+    fontSize: 14,
+    backgroundColor: "black",
+    width: 30,
+    height: 30,
+    color: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 9
+  }
+});
+
+const TabView = ({ tabTitles, selected }) => {
+  return (
+    <View style={tabViewStyles.paletteContainer}>
+      {tabTitles.map((title, index) => (
+        <View
+          style={
+            index === selected
+              ? tabViewStyles.selected
+              : tabViewStyles.unSelected
+          }
+          key={index}>
+          <Text>{title}</Text>
+        </View>
+      ))}
+    </View>
+  );
+};
+
+const tabViewStyles = StyleSheet.create({
+  paletteContainer: {
+    width: "70%",
+    height: 48,
+    backgroundColor: "#F1F1F1",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 10,
+    padding: 6,
+    marginVertical: 10,
+    marginHorizontal: 20
+  },
+  selected: {
+    borderRadius: 10,
+    flex: 1,
+    backgroundColor: "#fff",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "gray",
+    elevation: 10
+  },
+  unSelected: {
+    flex: 1,
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F1F1F1",
+    borderRadius: 10
   }
 });
