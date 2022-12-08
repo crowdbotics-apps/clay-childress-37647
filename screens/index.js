@@ -1,76 +1,239 @@
-import React from "react";
-import { Text, StyleSheet, View, Image, Pressable } from "react-native";
+import React, { useState } from "react";
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  SafeAreaView,
+  TextInput,
+  Pressable
+} from "react-native";
 
-const UploadMediaScreen = (params) => {
+const AddCardDetailsScreen = (params) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  const [country, setCountry] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cvv, setCvv] = useState("");
   return (
-    <View style={styles.container}>
-      <View style={styles.menu}>
-        <View style={styles.menuItem}>
-          <Text style={styles.menuItemText}>Take photo or video</Text>
-          <Image source={require("./assets/cameraIcon.png")} />
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={styles.header}>
+          <View style={styles.paletteContainer}>
+            <View style={styles.unSelected}>
+              <Text>Linked Cards</Text>
+            </View>
+            <View style={styles.selected}>
+              <Text>Add Card</Text>
+            </View>
+          </View>
         </View>
-        <View style={styles.menuItem}>
-          <Text style={styles.menuItemText}>Photo Library</Text>
-          <Image source={require("./assets/libraryIcon.png")} />
+        <View style={styles.fullInputs}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>First Name</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setFirstName(text)}
+              value={firstName}
+              placeholder="Enter your first name"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Last Name</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setLastName(text)}
+              value={lastName}
+              placeholder="Enter your last name"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Address 1</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setAddress1(text)}
+              value={address1}
+              placeholder="Enter your Adress"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Address 2</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setAddress2(text)}
+              value={address2}
+              placeholder="Enter your Address"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
         </View>
-        <View style={styles.menuItem}>
-          <Text style={styles.menuItemText}>Browse</Text>
-          <Image source={require("./assets/menuIcon.png")} />
+        <View style={styles.halfInputs}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>City</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setCity(text)}
+              value={city}
+              placeholder="Enter your City"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>State</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setState(text)}
+              value={state}
+              placeholder="Enter your State"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
         </View>
-      </View>
-      <Button buttonText="Cancel" outline={true} />
-    </View>
+        <View style={styles.halfInputs}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Zip</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setZip(text)}
+              value={zip}
+              placeholder="Enter your Zip Code"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Country</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setCountry(text)}
+              value={country}
+              placeholder="Enter your Country"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+        </View>
+        <View style={styles.halfInputs}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Card Expiration</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setCardExpiry(text)}
+              value={cardExpiry}
+              placeholder="Enter Card Expiration"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>CVV</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setCvv(text)}
+              value={cvv}
+              placeholder="Enter your CVV"
+              placeholderTextColor="#9B9B9B"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+        </View>
+        <View style={styles.btnContainer}>
+          <Pressable style={styles.btn}>
+            <Text style={styles.btnText}>Update</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-    justifyContent: "flex-end"
+    backgroundColor: "#fff"
   },
-  menuItem: {
+  header: {
+    padding: 20
+  },
+  paletteContainer: {
     flexDirection: "row",
+    backgroundColor: "#F1F1F1",
+    height: 60,
+    width: 250,
+    borderRadius: 10,
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderColor: "#ccc"
+    justifyContent: "space-around",
+    paddingHorizontal: 15
   },
-  menuItemText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
-    textAlign: "left"
-  }
-});
-export default UploadMediaScreen;
-
-const Button = (params) => {
-  const btnStyle = {
-    backgroundColor: params.outline ? "#fff" : "#000",
-    borderColor: params.outline ? "#000" : "#fff",
-    borderWidth: 1
-  };
-  const btnText = {
-    color: params.outline ? "#000" : "#fff"
-  };
-  return (
-    <View style={buttonStyles.btnContainer}>
-      <Pressable style={[buttonStyles.btn, btnStyle]} onPress={params.onPress}>
-        <Text style={[buttonStyles.btnText, btnText]}>{params.buttonText}</Text>
-        <View style={styles.childrenContainer}>{params.children}</View>
-      </Pressable>
-    </View>
-  );
-};
-
-const buttonStyles = StyleSheet.create({
-  btnContainer: {
-    paddingTop: 10,
+  selected: {
+    backgroundColor: "#fff",
+    padding: 10,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#e6e6e6"
+  },
+  unSelected: {
+    padding: 10,
+    paddingHorizontal: 25
+  },
+  fullInputs: {
     paddingHorizontal: 20,
+    justifyContent: "center"
+  },
+  inputContainer: {
+    flexDirection: "column",
+    flex: 1,
+    justifyContent: "center",
+    marginHorizontal: 5
+  },
+  inputText: {
+    fontSize: 16,
+    marginLeft: 20
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#e6e6e6",
+    borderRadius: 10,
+    padding: 10,
+    paddingLeft: 20,
+    marginVertical: 10,
+    width: "100%"
+  },
+  halfInputs: {
+    paddingHorizontal: 20,
+    justifyContent: "space-between",
+    flexDirection: "row" // borderColor: '#9B9B9B',
+    // borderWidth: 1,
+  },
+  btnContainer: {
+    padding: 30,
+    paddingTop: 10,
+    paddingHorizontal: 40,
     justifyContent: "center",
     marginTop: 20
   },
@@ -82,18 +245,12 @@ const buttonStyles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 10,
     justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "rgba(0, 0, 0, 0.2)",
-    elevation: 10,
-    flexDirection: "row"
+    alignItems: "center"
   },
   btnText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold"
-  },
-  childrenContainer: {
-    justifyContent: "center",
-    alignItems: "center"
   }
 });
+export default AddCardDetailsScreen;
